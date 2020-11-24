@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/user/Desktop/git projects/Doubly-Linked-List-Generic/double_linked_list.h
+iostream
+-
+assert.h
+C:/Users/user/Desktop/git projects/Doubly-Linked-List-Generic/assert.h
+
+C:/Users/user/Desktop/git projects/Doubly-Linked-List-Generic/main.cpp
+iostream
+-
+double_linked_list.h
+C:/Users/user/Desktop/git projects/Doubly-Linked-List-Generic/double_linked_list.h
+
