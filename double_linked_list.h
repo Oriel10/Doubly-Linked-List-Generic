@@ -3,8 +3,6 @@
 #include <iostream>
 #include "assert.h"
 
-
-
 template<class Data>// Data,Key
 struct Node{
     Data data;
@@ -63,21 +61,6 @@ public:
     }
 };
 
-///////////////////////////ITERATOR CLASS///////////////////////////////////////
-// template<class Data>
-// class DLinkedList<Data>::iterator{
-//     DLinkedList<Data>* list;
-//     Node<Data>* Node;
-//     iterator(DLinkedList<Data>* list,Node<Data>* Node);
-//     friend class DLinkedList<Data>;
-// public:
-//     Node<Data>* operator*() const;
-//     iterator& operator++();
-//     bool operator==(const iterator& it) const;
-//     bool operator!=(const iterator& it) const;
-// };
-
-///////////////////////////////////////////////////////////////////////////
 template<class Data>
 DLinkedList<Data>::~DLinkedList(){
     Node<Data>* todel = nullptr;

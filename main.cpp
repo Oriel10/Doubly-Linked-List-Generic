@@ -15,7 +15,6 @@ int main(int, char**) {
     Node<int*>* tmp2 = list1.find_key(15); 
     list1.insertBefore(5,nullptr,tmp);
     
-    // list1.print_list();
     
     for(DLinkedList<int*>::iterator it = list1.begin();it != list1.end();++it){
         std::cout<<(*it)->key<<" ";
@@ -24,6 +23,5 @@ int main(int, char**) {
     for(Node<int*>* node1 : list1){
         std::cout<<"-";
         std::cout<<node1->key;
-
     }
 }
