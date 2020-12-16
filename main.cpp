@@ -10,17 +10,17 @@ int main(int, char**) {
     list1.insertOrdered(15);
     list1.insertLast(17);
     list1.insertFirst(1);
-    Node<int*>* tmp = list1.find_key(6); 
-    Node<int*>* tmp1 = list1.find_key(17); 
-    Node<int*>* tmp2 = list1.find_key(15); 
+    DLinkedList<int*>::Node tmp = list1.find_key(6); 
+    DLinkedList<int*>::Node tmp1 = list1.find_key(17); 
+    DLinkedList<int*>::Node tmp2 = list1.find_key(15); 
     list1.insertBefore(5,nullptr,tmp);
-    
+    list1.insertLast(70);
     
     for(DLinkedList<int*>::iterator it = list1.begin();it != list1.end();++it){
         std::cout<<(*it)->key<<" ";
     }
     std::cout<<std::endl;
-    for(Node<int*>* node1 : list1){
+    for(DLinkedList<int*>::Node node1 : list1){
         std::cout<<"-";
         std::cout<<node1->key;
     }
