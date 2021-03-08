@@ -5,7 +5,6 @@
 
 template<class Data>
 class DLinkedList{
-    
 public:
     struct node_t;
     typedef node_t* Node;
@@ -132,8 +131,6 @@ void DLinkedList<Data>::insertFirst(int key, Data data){
         head = new_node;
         tail = new_node;
         list_size++;
-        // new_node->next = nullptr;
-        // new_node->prev = nullptr;
         return;
     }
     new_node->next = head;
@@ -227,7 +224,7 @@ void DLinkedList<Data>::insertAfter(int key,Data data, Node after){
         return;
     }
     Node new_node = new node_t(key, *this, data);
-    if(after->next == nullptr){//after points to 1st element
+    if(after->next == nullptr){//before points to 1st element
         after->next = new_node;
         new_node->prev = after;
         new_node->next = nullptr;
@@ -295,13 +292,12 @@ typename DLinkedList<Data>::Node DLinkedList<Data>::find_key(int key) const{
 
 template<class Data>
 void DLinkedList<Data>::print_list() const{
-    // int counter = 0;
     Node tmp = head;
     while(tmp != nullptr){
         std::cout<<tmp->key<<" ";
         tmp = tmp->next;
-        // counter++;
     }
+    std::cout<<""<<std::endl;
 }
 
 template<class Data>
