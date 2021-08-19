@@ -14,9 +14,9 @@ public:
      * @brief the copy c'tor, will make another list that points at the same data,
      * and has the same nodes, other than the head and tail.
      */
-    DLinkedList(const DLinkedList& other) = default;
-    DLinkedList& operator=( const DLinkedList& other) = delete;
-    ~DLinkedList(); // Done
+    DLinkedList(const DLinkedList& other); 
+    DLinkedList& operator=(const DLinkedList& other) = delete;
+    ~DLinkedList(); 
     void insertFirst(int key, Data data = Data()); 
     void insertOrdered(int key, Data data = Data());
     //assuming before is not a nullptr
@@ -30,62 +30,14 @@ public:
     int getSize() const;
     Node GetTail() const;
     Node GetHead() const;
-    class iterator{
-        iterator(DLinkedList<Data>* list,Node some_node) : list(list), curr_node(some_node) {}
-        friend class DLinkedList<Data>;
-        DLinkedList<Data>* list;
-        Node curr_node;
-    public:
-        Node operator*() const{
-            return curr_node;
-        }
-        virtual iterator& operator++(){
-            curr_node = curr_node->next;
-            return *this;
-        }
-        bool operator==(const iterator& it) const{
-            assert(list == it.list);
-            return it.curr_node == curr_node;
-        }
-        bool operator!=(const iterator& it) const{
-            return !(*this == it);
-        }
-    };
-    iterator begin(){
-        return iterator(this,head);
-    } 
-    iterator end(){
-        return iterator(this,nullptr);
-    }
 
-    class reverse_iterator{
-        reverse_iterator(DLinkedList<Data>* list,Node some_node) : list(list), curr_node(some_node) {}
-        friend class DLinkedList<Data>;
-        DLinkedList<Data>* list;
-        Node curr_node;
-    public:
-        Node operator*() const{
-            return curr_node;
-        }
-        virtual reverse_iterator& operator++(){
-            curr_node = curr_node->prev;
-            return *this;
-        }
-        bool operator==(const reverse_iterator& it) const{
-            assert(list == it.list);
-            return it.curr_node == curr_node;
-        }
-        bool operator!=(const reverse_iterator& it) const{
-            return !(*this == it);
-        }
-    };
+    class iterator;
+    iterator begin(); 
+    iterator end();
 
-    reverse_iterator r_begin(){
-        return reverse_iterator(this,tail);
-    } 
-    reverse_iterator r_end(){
-        return reverse_iterator(this,nullptr);
-    }
+    class reverse_iterator;
+    reverse_iterator r_begin();
+    reverse_iterator r_end();
 private:
     int list_size;
     Node head,tail;
@@ -103,7 +55,7 @@ typename DLinkedList<Data>::Node DLinkedList<Data>::GetHead() const{
 
 template<class Data>
 struct DLinkedList<Data>::node_t{
-    DLinkedList<Data>& list;
+    DLinkedList<Data>& list;//reach the list this node belongs to with ease
     Data data;
     int key;
     node_t* next;
@@ -115,13 +67,33 @@ struct DLinkedList<Data>::node_t{
 
 template<class Data>
 DLinkedList<Data>::~DLinkedList(){
-    Node todel = nullptr;
+    Node todel = nullptr; 
     while(head){
         todel = head;
         head = head->next;
         delete todel;
     }
     head = nullptr;
+}
+
+template<class Data>
+DLinkedList<Data>::DLinkedList(const DLinkedList<Data>& other){
+    Node dummy_head = new node_t(0, *this, Data());
+    Node tmp = dummy_head;
+    head = dummy_head;
+    Node first = other.head;
+    while(first){
+        dummy_head = new node_t(first->key, *this, first->data);
+        tmp->next = dummy_head;
+        dummy_head->prev = tmp;
+        tmp = tmp->next;
+        first = first->next;
+    }
+    head = head->next;
+    delete(head->prev);
+    head->prev = nullptr;
+    tail = dummy_head;
+    list_size = other.list_size;
 }
 
 template<class Data>
@@ -312,5 +284,74 @@ template<class Data>
 int DLinkedList<Data>::getSize() const{
     return list_size;
 }
+
+/*------------------------------------------------------iterator implementation------------------------------------------------------*/
+template<class Data>
+class DLinkedList<Data>::iterator{
+        iterator(DLinkedList<Data>* list,Node some_node) : list(list), curr_node(some_node) {}
+        friend class DLinkedList<Data>;
+        DLinkedList<Data>* list;
+        Node curr_node;
+    public:
+        Node operator*() const{
+            return curr_node;
+        }
+        virtual iterator& operator++(){
+            curr_node = curr_node->next;
+            return *this;
+        }
+        bool operator==(const iterator& it) const{
+            assert(list == it.list);
+            return it.curr_node == curr_node;
+        }
+        bool operator!=(const iterator& it) const{
+            return !(*this == it);
+        }
+    };
+
+template<class Data>
+typename DLinkedList<Data>::iterator DLinkedList<Data>::begin(){
+    return iterator(this,head);
+} 
+
+template<class Data>
+typename DLinkedList<Data>::iterator DLinkedList<Data>::end(){
+    return iterator(this,nullptr);
+}
+
+/*------------------------------------------------------reverse iterator implementation------------------------------------------------------*/
+template<class Data>
+class DLinkedList<Data>::reverse_iterator{
+        reverse_iterator(DLinkedList<Data>* list,Node some_node) : list(list), curr_node(some_node) {}
+        friend class DLinkedList<Data>;
+        DLinkedList<Data>* list;
+        Node curr_node;
+    public:
+        Node operator*() const{
+            return curr_node;
+        }
+        virtual reverse_iterator& operator++(){
+            curr_node = curr_node->prev;
+            return *this;
+        }
+        bool operator==(const reverse_iterator& it) const{
+            assert(list == it.list);
+            return it.curr_node == curr_node;
+        }
+        bool operator!=(const reverse_iterator& it) const{
+            return !(*this == it);
+        }
+    }; 
+
+template<class Data>
+typename DLinkedList<Data>::reverse_iterator DLinkedList<Data>::r_begin(){
+    return reverse_iterator(this,tail);
+} 
+
+template<class Data>
+typename DLinkedList<Data>::reverse_iterator DLinkedList<Data>::r_end(){
+    return reverse_iterator(this,nullptr);
+}
+
 
 #endif 
