@@ -18,11 +18,13 @@ public:
     DLinkedList& operator=(const DLinkedList& other) = delete;
     ~DLinkedList(); 
     void insertFirst(int key, Data data = Data()); 
+    void insertLast(int key, Data data = Data()); 
+    //assuming the list is sorted
     void insertOrdered(int key, Data data = Data());
     //assuming before is not a nullptr
     void insertBefore(int key,Data data, Node before);
-    void insertAfter(int key,Data data, Node before);
-    void insertLast(int key, Data data = Data()); 
+    void insertAfter(int key,Data data, Node after);
+    void reverseList();
     void deleteNodeKey(int key); 
     void deleteNode(Node todel);
     Node find_key(int key) const;
@@ -38,6 +40,7 @@ public:
     class reverse_iterator;
     reverse_iterator r_begin();
     reverse_iterator r_end();
+
 private:
     int list_size;
     Node head,tail;
@@ -112,7 +115,7 @@ void DLinkedList<Data>::insertFirst(int key, Data data){
     list_size++;
 }
 
-//assuming key doesnt already exist, can check it with "find_key" function before use.
+//assuming key doesn't already exist, can check it with "find_key" function before use.
 //use only when insertFirst/insertLast are not used at all
 template<class Data>
 void DLinkedList<Data>::insertOrdered(int key, Data data){
@@ -125,6 +128,7 @@ void DLinkedList<Data>::insertOrdered(int key, Data data){
         new_node->prev = nullptr;
         return;
     }
+    
     Node tmp = head;
     while(tmp != nullptr){
         if(tmp->key < key && tmp->next == nullptr){
@@ -196,7 +200,7 @@ void DLinkedList<Data>::insertAfter(int key,Data data, Node after){
         return;
     }
     Node new_node = new node_t(key, *this, data);
-    if(after->next == nullptr){//before points to 1st element
+    if(after->next == nullptr){//after points to last element
         after->next = new_node;
         new_node->prev = after;
         new_node->next = nullptr;
@@ -230,6 +234,23 @@ void DLinkedList<Data>::insertBefore(int key,Data data, Node before){
     new_node->next = before;
     before->prev = new_node;
     list_size++;
+}
+
+template<class Data>
+void DLinkedList<Data>::reverseList(){
+    if(list_size == 0 || list_size == 1){
+        return;
+    }
+    Node tmp = head;
+    Node previous = nullptr;
+    while(tmp){
+        previous = tmp->prev;
+        tmp->prev = tmp->next;
+        tmp->next = previous;
+        tmp = tmp->prev;
+    }
+    tail = head;
+    head = previous->prev;
 }
 
 template<class Data>

@@ -8,17 +8,23 @@ int main(int, char**) {
     list1.insertOrdered(7);
     list1.insertOrdered(9);
     list1.insertOrdered(15);
+    list1.print_list();
     
-    for(DLinkedList<int*>::iterator it = list1.begin();it != list1.end();++it){
-        std::cout<<(*it)->key<<" ";
-    }
-    DLinkedList<int*> list2 = list1;
-    for(DLinkedList<int*>::Node node1 : list2){
-        std::cout<<"-";
-        std::cout<<node1->key;
-    }
     std::cout<<std::endl;
-    for(DLinkedList<int*>::reverse_iterator it = list2.r_begin();it != list2.r_end();++it){
-        std::cout<<(*it)->key<<" ";
-    }
+    list1.reverseList();
+    list1.print_list();
+
+    
+    // for(DLinkedList<int*>::iterator it = list1.begin();it != list1.end();++it){
+    //     std::cout<<(*it)->key<<" ";
+    // }
+    // DLinkedList<int*> list2 = list1;
+    // for(DLinkedList<int*>::Node node1 : list2){
+    //     std::cout<<"-";
+    //     std::cout<<node1->key;
+    // }
+    // std::cout<<std::endl;
+    // for(DLinkedList<int*>::reverse_iterator it = list2.r_begin();it != list2.r_end();++it){
+    //     std::cout<<(*it)->key<<" ";
+    // }
 }
