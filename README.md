@@ -16,7 +16,11 @@ each node has an integer key and generic data.
 
 -deleting a node in the list. O(1) when the node is given.
 
--deleting the node of a specific key. O(n).
+-deleting the node of a specific key. O(n).  
+
+-deleting the first node of the list. O(1).  
+
+-deleting the last node of the list. O(1).
 
 -printing the list. O(n).
 
