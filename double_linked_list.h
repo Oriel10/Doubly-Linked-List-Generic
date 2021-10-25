@@ -9,7 +9,7 @@ public:
     struct node_t;
     typedef node_t* Node;
 
-    DLinkedList() : list_size(0), head(nullptr), tail(nullptr) {}
+    DLinkedList() : size(0), head(nullptr), tail(nullptr) {}
     /**
      * @brief the copy c'tor, will make another list that points at the same data,
      * and has the same nodes, other than the head and tail.
@@ -26,7 +26,8 @@ public:
     void insertAfter(int key,Data data, Node after);
     void reverseList();
     void deleteNodeKey(int key); 
-    void deleteNode(Node todel);
+    void pop_back();
+    void pop_front();
     Node find_key(int key) const;
     void print_list() const;
     int getSize() const;
@@ -42,7 +43,7 @@ public:
     reverse_iterator r_end();
 
 private:
-    int list_size;
+    int size;
     Node head,tail;
 };
 
@@ -96,7 +97,7 @@ DLinkedList<Data>::DLinkedList(const DLinkedList<Data>& other){
     delete(head->prev);
     head->prev = nullptr;
     tail = dummy_head;
-    list_size = other.list_size;
+    size = other.size;
 }
 
 template<class Data>
@@ -105,14 +106,14 @@ void DLinkedList<Data>::insertFirst(int key, Data data){
     if(head == nullptr){
         head = new_node;
         tail = new_node;
-        list_size++;
+        size++;
         return;
     }
     new_node->next = head;
     head = new_node;
     new_node->next->prev = head;
     new_node->prev = nullptr;
-    list_size++;
+    size++;
 }
 
 //assuming key doesn't already exist, can check it with "find_key" function before use.
@@ -123,7 +124,7 @@ void DLinkedList<Data>::insertOrdered(int key, Data data){
     if(head == nullptr){
         head = new_node;
         tail = new_node;
-        list_size++;
+        size++;
         new_node->next = nullptr;
         new_node->prev = nullptr;
         return;
@@ -136,7 +137,7 @@ void DLinkedList<Data>::insertOrdered(int key, Data data){
             new_node->next = nullptr;
             new_node->prev = tmp;
             tail = new_node;
-            list_size++;
+            size++;
             return;
         }
         else if(tmp->key < key && tmp->next != nullptr && tmp->next->key > key){
@@ -144,7 +145,7 @@ void DLinkedList<Data>::insertOrdered(int key, Data data){
             new_node->next = tmp->next;
             tmp->next->prev = new_node;
             tmp->next = new_node;
-            list_size++;
+            size++;
             return;
 
         }
@@ -153,7 +154,7 @@ void DLinkedList<Data>::insertOrdered(int key, Data data){
             new_node->prev = nullptr;
             new_node->next = tmp;
             head = new_node;
-            list_size++;
+            size++;
             return;
 
         }
@@ -165,7 +166,7 @@ void DLinkedList<Data>::insertOrdered(int key, Data data){
 template<class Data>
 void DLinkedList<Data>::node_t::removeFromList(){
     if(next == nullptr && prev == nullptr){
-        list.list_size--;
+        list.size--;
         list.head = nullptr;
         list.tail = nullptr;
         delete this;
@@ -174,21 +175,21 @@ void DLinkedList<Data>::node_t::removeFromList(){
     else if(next == nullptr){
         prev->next = nullptr;
         list.tail = prev;
-        list.list_size--;
+        list.size--;
         delete this;
         return;
     }
     else if(prev == nullptr){
         next->prev = nullptr;
         list.head = next;
-        list.list_size--;
+        list.size--;
         delete this;
         return;
     }
     else{
         next->prev = prev;
         prev->next = next;
-        list.list_size--;
+        list.size--;
         delete this;
         return;
     }
@@ -205,14 +206,14 @@ void DLinkedList<Data>::insertAfter(int key,Data data, Node after){
         new_node->prev = after;
         new_node->next = nullptr;
         tail = new_node;
-        list_size++;
+        size++;
         return;
     }
     new_node->prev = after;
     after->next->prev = new_node;
     new_node->next = after->next;
     after->next = new_node;
-    list_size++;
+    size++;
 }
 
 template<class Data>
@@ -226,19 +227,19 @@ void DLinkedList<Data>::insertBefore(int key,Data data, Node before){
         new_node->prev = nullptr;
         new_node->next = before;
         head = new_node;
-        list_size++;
+        size++;
         return;
     }
     new_node->prev = before->prev;
     before->prev->next = new_node;
     new_node->next = before;
     before->prev = new_node;
-    list_size++;
+    size++;
 }
 
 template<class Data>
 void DLinkedList<Data>::reverseList(){
-    if(list_size == 0 || list_size == 1){
+    if(size == 0 || size == 1){
         return;
     }
     Node tmp = head;
@@ -265,7 +266,7 @@ void DLinkedList<Data>::insertLast(int key, Data data){
         tail = new_node;
         tail->prev = tmp;
         tail->next = nullptr;
-        list_size++;
+        size++;
     } 
 }
  
@@ -302,8 +303,24 @@ void DLinkedList<Data>::deleteNodeKey(int key){
 }
 
 template<class Data>
+void DLinkedList<Data>::pop_back(){
+    if(tail == nullptr){
+        return;
+    }
+    tail->removeFromList();
+}
+
+template<class Data>
+void DLinkedList<Data>::pop_front(){
+    if(head == nullptr){
+        return;
+    }
+    head->removeFromList();
+}
+
+template<class Data>
 int DLinkedList<Data>::getSize() const{
-    return list_size;
+    return size;
 }
 
 /*------------------------------------------------------iterator implementation------------------------------------------------------*/

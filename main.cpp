@@ -14,6 +14,10 @@ int main(int, char**) {
     list1.reverseList();
     list1.print_list();
 
+    std::cout<<"delete first and last elements in the reversed list"<<std::endl;
+    list1.pop_back();
+    list1.pop_front();
+    list1.print_list();
     
     // for(DLinkedList<int*>::iterator it = list1.begin();it != list1.end();++it){
     //     std::cout<<(*it)->key<<" ";
